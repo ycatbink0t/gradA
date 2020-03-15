@@ -9,6 +9,7 @@ import passport, { mustAuthenticated } from './passport';
 import me from './routes/me';
 
 const app = express();
+app.disable('x-powered-by');
 
 const sessionMiddleware = session({
     secret: config.secret,
