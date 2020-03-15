@@ -1,2 +1,10 @@
 # Project exclude paths
 /node_modules/
+.idea
+*.js
+*.map
+
+!.eslintrc.js
+!.prettierrc.js
+
+config.json
