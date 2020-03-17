@@ -15,6 +15,8 @@ passport.use('local', new LocalStrategy(
     (username, password, done) => {
         if (username === userStub.username && password == userStub.password) {
             done(null, userStub);
+            const user = User.get({username});
+            console.log(user);
         } else {
             done(null, false, { message: 'Incorrect username or password'});
         }

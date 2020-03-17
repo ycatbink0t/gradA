@@ -1,32 +1,45 @@
 import pool from '../db';
-
-const userStub = {
-    name: 'Serhii',
-    surname: 'Pylypchuk',
-    email: 'stub@email.com',
-    username: 'zalupa',
-    password: 'dupa'
-};
+import { paramsToSetByIdString, paramsToWhereEqualString } from '../db/utils';
 
 export interface IUser {
-    id?: number,
-    email?: string,
-    username?: string,
-    password?: string,
-    profile_id?: number,
+    id: number,
+    email: string,
+    username: string,
+    password: string,
+    profile_id: number,
 }
 
 class User {
-    constructor(
-        private userParams: IUser) {}
-    static async get(params: IUser): Promise<User | undefined> {
+    static async get(params: Partial<IUser>): Promise<IUser[] | null> {
+        const [where, values] = paramsToWhereEqualString(params);
+
+        const sql = 'SELECT * from user ' + where;
+        if (process.env.NODE_ENV === 'dev') {
+            console.log(sql, values);
+        }
         const conn = await pool.connect();
-        const result = await conn.query<IUser>('');
-        const user = result.rows[0];
+        const { rows } = await conn.query<IUser>(sql, values);
         conn.release();
-        return user
-            ? new User(user)
-            : undefined;
+
+        return rows.length > 0
+            ? rows
+            : null;
+    }
+
+    static async patch(params: Partial<IUser>): Promise<IUser | null> {
+        const [set, values] = paramsToSetByIdString(params);
+
+        const sql = 'UPDATE user ' + set;
+        if (process.env.NODE_ENV === 'dev') {
+            console.log(sql, values);
+        }
+        const conn = await pool.connect();
+        const { rows } = await pool.query<IUser>(sql, values);
+        conn.release();
+
+        return rows.length === 1
+            ? rows[0]
+            : null;
     }
 }
 
