@@ -2,6 +2,7 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { NextFunction, Request, Response } from 'express';
 import HttpStatus from 'http-status-codes';
+import User from '../models/User';
 
 const userStub = {
     name: 'Serhii',

@@ -11,6 +11,7 @@
   "author": "Serhii Pylypchuk, Dzuba Michael",
   "license": "ISC",
   "dependencies": {
+    "@types/pg": "^7.14.3",
     "cookie-parser": "^1.4.5",
     "db-migrate": "^0.11.6",
     "db-migrate-pg": "^1.0.0",
@@ -18,7 +19,8 @@
     "express-session": "^1.17.0",
     "http-status-codes": "^1.4.0",
     "passport": "^0.4.1",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "pg": "^7.18.2"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.2",
@@ -33,6 +35,6 @@
     "eslint-config-prettier": "^6.7.0",
     "eslint-plugin-prettier": "^3.1.1",
     "prettier": "^1.19.1",
-    "typescript": "^3.7.2"
+    "typescript": "^3.8.3"
   }
 }
