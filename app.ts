@@ -4,7 +4,7 @@ import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import { MemoryStore } from 'express-session';
 
-import passport, { mustAuthenticated } from './passport';
+import { mustAuthenticated, passport } from './passport';
 
 import me from './routes/me';
 

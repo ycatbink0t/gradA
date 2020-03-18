@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "tsc && node app.js --harmony",
-    "db-migrate": "node node_modules/db-migrate/bin/db-migrate"
+    "db-migrate": "node node_modules/db-migrate/bin/db-migrate",
+    "up": "db-migrate up"
   },
   "author": "Serhii Pylypchuk, Dzuba Michael",
   "license": "ISC",

@@ -38,5 +38,4 @@ function mustAuthenticated(req: Request, res: Response, next: NextFunction) {
     return next();
 }
 
-export { mustAuthenticated };
-export default passport;
+export { mustAuthenticated, passport };

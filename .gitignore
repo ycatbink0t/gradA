@@ -9,3 +9,4 @@
 
 config.json
 database.json
+!migrations/*.js
