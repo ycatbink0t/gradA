@@ -7,6 +7,7 @@ import { MemoryStore } from 'express-session';
 import { mustAuthenticated, passport } from './passport';
 
 import me from './routes/me';
+import signup from './routes/signup';
 
 const app = express();
 app.disable('x-powered-by');
@@ -26,6 +27,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/me', mustAuthenticated, me);
+app.use('/signup', signup);
 app.post('/login', passport.authenticate('local', { session: true }));
 app.post('/logout', mustAuthenticated, (req, res) => {
     req.logOut();

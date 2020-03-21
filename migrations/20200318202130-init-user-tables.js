@@ -30,7 +30,7 @@ exports.up = function(db) {
       city: {type: 'string', length: 60},
       country: {type: 'string', length: 60},
       info: {type: 'string', length: 255},
-      user_id: {type: 'int'}
+      user_id: {type: 'int', notNull: true}
     });
     await db.addForeignKey('user', 'profile', 'user_profile',
         {

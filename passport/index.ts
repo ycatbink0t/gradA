@@ -2,24 +2,21 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { NextFunction, Request, Response } from 'express';
 import HttpStatus from 'http-status-codes';
-import User from '../models/User';
-
-const userStub = {
-    name: 'Serhii',
-    surname: 'Pylypchuk',
-    username: 'zalupa',
-    password: 'dupa'
-};
+import User, { IUser } from '../models/User';
+import bcrypt from 'bcrypt';
 
 passport.use('local', new LocalStrategy(
-    (username, password, done) => {
-        if (username === userStub.username && password == userStub.password) {
-            done(null, userStub);
-            const user = User.get({username});
-            console.log(user);
-        } else {
-            done(null, false, { message: 'Incorrect username or password'});
+    async (username, password, done) => {
+        const user = await User.get({username});
+        console.log(user);
+        if (user as IUser[] && user?.length) {
+            const isValid = await bcrypt.compare(password, user[0].password);
+            if (isValid) {
+                done(null, user);
+                return;
+            }
         }
+        done(null, false, { message: 'Incorrect username or password'});
     }
 ));
 
