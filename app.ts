@@ -34,6 +34,8 @@ app.post('/logout', mustAuthenticated, (req, res) => {
     res.send({});
 });
 
-app.listen(config.app.port, _ => {
+const server = app.listen(config.app.port, _ => {
     console.log('Server listening on port ', config.app.port);
 });
+
+export default server;

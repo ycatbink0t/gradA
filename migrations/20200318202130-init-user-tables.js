@@ -25,8 +25,8 @@ exports.up = function(db) {
     });
     await db.createTable('profile', {
       id: {type: 'int', primaryKey: true, autoIncrement: true, notNull: true, unsigned: true },
-      name: {type: 'string', notNull: true, length: 50},
-      surname: {type: 'string', notNull: true, length: 100},
+      name: {type: 'string', length: 50},
+      surname: {type: 'string', length: 100},
       city: {type: 'string', length: 60},
       country: {type: 'string', length: 60},
       info: {type: 'string', length: 255},

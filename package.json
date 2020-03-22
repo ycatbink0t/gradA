@@ -4,18 +4,21 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc && node app.js --harmony",
+    "test": "cross-env NODE_ENV=test --env=test jest --testTimeout=5000 --detectOpenHandles",
+    "migrate:reset": "db-migrate down:all",
+    "m:r:test": "db-migrate down:all --env=test && db-migrate up:all --env=test",
+    "migrate": "db-migrate up",
+    "start": "tsc && node www/index NODE_ENV=dev",
+    "startProd": "tsc && node www/index NODE_ENV=prod",
     "db-migrate": "node node_modules/db-migrate/bin/db-migrate",
-    "up": "db-migrate up"
+    "pretest": "npm run m:r:test"
   },
   "author": "Serhii Pylypchuk, Dzuba Michael",
   "license": "ISC",
   "dependencies": {
-    "@types/bcrypt": "^3.0.0",
-    "@types/pg": "^7.14.3",
     "bcrypt": "^4.0.1",
     "cookie-parser": "^1.4.5",
+    "cross-env": "^7.0.2",
     "db-migrate": "^0.11.6",
     "db-migrate-pg": "^1.0.0",
     "express": "^4.17.1",
@@ -27,18 +30,48 @@
     "pg": "^7.18.2"
   },
   "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
     "@types/cookie-parser": "^1.4.2",
     "@types/express": "^4.17.3",
     "@types/express-session": "^1.17.0",
+    "@types/jest": "^25.1.4",
     "@types/node": "^12.12.14",
     "@types/passport": "^1.0.3",
     "@types/passport-local": "^1.0.33",
+    "@types/pg": "^7.14.3",
+    "@types/supertest": "^2.0.8",
     "@typescript-eslint/eslint-plugin": "^2.9.0",
     "@typescript-eslint/parser": "^2.9.0",
     "eslint": "^6.7.1",
     "eslint-config-prettier": "^6.7.0",
     "eslint-plugin-prettier": "^3.1.1",
+    "jest": "^25.1.0",
     "prettier": "^1.19.1",
+    "supertest": "^4.0.2",
+    "ts-jest": "^25.2.1",
     "typescript": "^3.8.3"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "preset": "ts-jest",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    },
+    "globals": {
+      "ts-jest": {
+        "tsConfigFile": "tsconfig.json"
+      }
+    },
+    "testMatch": [
+      "**/__tests__/*.+(ts|tsx|js)"
+    ]
   }
 }

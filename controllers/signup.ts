@@ -17,7 +17,7 @@ async function singUpController(newUser: NewUser): Promise<IUser> {
     try {
         user = await User.put({...newUser, password});
         profile = await Profile.put(user.id as number);
-        user = await User.patch({profile_id: profile.id});
+        user = await User.patch({profile_id: profile.id, id: user.id});
     } catch (e) {
         console.log(e);
         throw new Error(e);

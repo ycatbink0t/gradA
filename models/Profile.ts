@@ -19,10 +19,8 @@ class Profile {
     static async get(params: Partial<IProfile>): Promise<IProfile[] | null> {
         const [where, values] = paramsToWhereEqualString(params);
 
-        const sql = 'SELECT * FROM profile ' + where;
-        if (process.env.NODE_ENV === 'dev') {
-            console.log(sql, values);
-        }
+        const sql = 'SELECT * FROM public.profile ' + where;
+
         const { rows } = await pool.query<IProfile>(sql, values);
 
         return rows.length > 0
@@ -33,20 +31,16 @@ class Profile {
     static async patch(params: Partial<IProfile>): Promise<IProfile> {
         const [set, values] = paramsToSetByIdString(params);
 
-        const sql = 'UPDATE profile ' + set;
-        if (process.env.NODE_ENV === 'dev') {
-            console.log(sql, values);
-        }
+        const sql = 'UPDATE public.profile ' + set + ' RETURNING *';
+
         const { rows } = await pool.query<IProfile>(sql, values);
 
         return rows[0]
     }
 
     static async put(user_id: number): Promise<IProfile> {
-        const sql = `INSERT INTO profile('user_id') VALUES ($1)`;
-        if (process.env.NODE_ENV === 'dev') {
-            console.log(sql, user_id);
-        }
+        const sql = `INSERT INTO public.profile (user_id) VALUES ($1) RETURNING *`;
+
         const { rows } = await pool.query<IProfile>(sql, [user_id]);
         return rows[0];
     }

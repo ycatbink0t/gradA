@@ -17,10 +17,8 @@ class User {
     static async get(params: Partial<IUser>): Promise<IUser[] | null> {
         const [where, values] = paramsToWhereEqualString(params);
 
-        const sql = 'SELECT * FROM user ' + where;
-        if (process.env.NODE_ENV === 'dev') {
-            console.log(sql, values);
-        }
+        const sql = 'SELECT * FROM public.user ' + where;
+
         const { rows } = await pool.query<IUser>(sql, values);
 
         return rows.length > 0
@@ -31,20 +29,15 @@ class User {
     static async patch(params: Partial<IUser>): Promise<IUser> {
         const [set, values] = paramsToSetByIdString(params);
 
-        const sql = 'UPDATE user ' + set;
-        if (process.env.NODE_ENV === 'dev') {
-            console.log(sql, values);
-        }
+        const sql = 'UPDATE public.user ' + set + ' RETURNING *';
+
         const { rows } = await pool.query<IUser>(sql, values);
 
         return rows[0];
     }
 
     static async put(params: IUser): Promise<IUser> {
-        const sql = `INSERT INTO user('email', 'username', 'password') VALUES ($1, $2, $3)`;
-        if (process.env.NODE_ENV === 'dev') {
-            console.log(sql, params);
-        }
+        const sql = `INSERT INTO public.user (email, username, password) VALUES ($1, $2, $3) RETURNING *`;
 
         const { rows } = await pool.query<IUser>(sql, [params.email, params.username, params.password]);
 

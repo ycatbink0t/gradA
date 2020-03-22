@@ -22,10 +22,10 @@ function paramsToSetByIdString(params: Params): SqlAndValues {
         if (param === 'id') {
             return;
         }
-        set += ` ${param} = $${i},`;
+        set += ` ${param} = $${i}, `;
         values.push(params[param]);
     });
-    set = set.substring(0, set.length - 1) + `WHERE id = $${i + 1}`;
+    set = set.substring(0, set.length - 2) + ` WHERE id = $${i + 1}`;
     values.push(params.id);
     return [set, values];
 }
