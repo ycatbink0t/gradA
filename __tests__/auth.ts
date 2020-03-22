@@ -26,7 +26,7 @@ describe('Sign up test', () => {
            .post('/signup')
            .send(newUserStub);
 
-        expect(res.status).toBe(HttpStatus.OK);
+        expect(res.status).toBe(HttpStatus.CREATED);
         expect(res.body).toHaveProperty('profile_id');
     });
 });
@@ -40,9 +40,17 @@ describe('Sign in test', () => {
         const res = await agent
             .post('/login')
             .send(credentialInfo);
-
+        2
         expect(res.status).toBe(HttpStatus.OK);
         expect(res.body).toHaveProperty('username');
+    });
+});
+
+describe('Profile test', () => {
+    it ('Should get user profile', async () => {
+        const res = await agent.get('/api/v1/profile?me=true');
+        expect(res.status).toBe(HttpStatus.OK);
+        expect(res.body).toHaveProperty('user_id');
     });
 });
 

@@ -11,6 +11,9 @@ function paramsToWhereEqualString(params: Params): SqlAndValues {
         where += ` ${param} = $${i + 1} AND`;
         values.push(params[param])
     });
+    if (values.length === 0) {
+        where = '';
+    }
     return [where.substr(0, where.length - 3), values];
 }
 

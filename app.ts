@@ -6,8 +6,8 @@ import { MemoryStore } from 'express-session';
 
 import { mustAuthenticated, passport } from './passport';
 
-import me from './routes/me';
 import signup from './routes/signup';
+import { apiV1 } from './routes/apiv1';
 
 const app = express();
 app.disable('x-powered-by');
@@ -26,11 +26,13 @@ app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/me', mustAuthenticated, me);
+app.use('/api/v1', mustAuthenticated, apiV1);
 app.use('/signup', signup);
 app.post('/login', passport.authenticate('local',
     { session: true }),
-    (req, res) => res.send(req.user));
+    (req, res) => {
+        res.status(201).send(req.user);
+    });
 app.post('/logout', mustAuthenticated, (req, res) => {
     req.logOut();
     res.send({});
@@ -38,6 +40,10 @@ app.post('/logout', mustAuthenticated, (req, res) => {
 
 const server = app.listen(config.app.port, _ => {
     console.log('Server listening on port ', config.app.port);
+});
+
+process.on('uncaughtException', error => {
+   console.error(error);
 });
 
 export default server;

@@ -18,7 +18,6 @@ class Profile {
 
     static async get(params: Partial<IProfile>): Promise<IProfile[] | null> {
         const [where, values] = paramsToWhereEqualString(params);
-
         const sql = 'SELECT * FROM public.profile ' + where;
 
         const { rows } = await pool.query<IProfile>(sql, values);

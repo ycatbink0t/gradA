@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test --env=test jest --testTimeout=5000",
+    "test": "cross-env NODE_ENV=test --env=test jest",
     "migrate:reset": "db-migrate down:all",
     "m:r:test": "db-migrate down:all --env=test && db-migrate up:all --env=test",
     "migrate": "db-migrate up",
-    "start": "tsc && node www/index NODE_ENV=dev",
+    "start": "tsc && node app NODE_ENV=dev",
     "startProd": "tsc && node www/index NODE_ENV=prod",
     "db-migrate": "node node_modules/db-migrate/bin/db-migrate",
     "pretest": "npm run m:r:test"
@@ -67,7 +67,7 @@
     },
     "globals": {
       "ts-jest": {
-        "tsConfigFile": "tsconfig.json"
+        "tsConfig": "tsconfig.json"
       }
     },
     "testMatch": [

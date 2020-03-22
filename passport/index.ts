@@ -19,19 +19,19 @@ passport.use('local', new LocalStrategy(
     }
 ));
 
-passport.serializeUser((user: any, done: (error: null | Error, user: any) => void): void => {
-    done(null, user);
-});
-
-passport.deserializeUser((user: any, done: (error: null | Error, user: any) => void): void => {
-    done(null, user);
-});
-
 function mustAuthenticated(req: Request, res: Response, next: NextFunction) {
     if (!req.isAuthenticated()) {
         return res.status(HttpStatus.UNAUTHORIZED).send({});
     }
     return next();
 }
+
+passport.serializeUser((user, done) => {
+    done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+    done(null, user)
+});
 
 export { mustAuthenticated, passport };
