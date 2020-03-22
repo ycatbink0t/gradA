@@ -28,7 +28,9 @@ app.use(passport.session());
 
 app.use('/me', mustAuthenticated, me);
 app.use('/signup', signup);
-app.post('/login', passport.authenticate('local', { session: true }));
+app.post('/login', passport.authenticate('local',
+    { session: true }),
+    (req, res) => res.send(req.user));
 app.post('/logout', mustAuthenticated, (req, res) => {
     req.logOut();
     res.send({});

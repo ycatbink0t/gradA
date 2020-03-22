@@ -8,11 +8,10 @@ import bcrypt from 'bcrypt';
 passport.use('local', new LocalStrategy(
     async (username, password, done) => {
         const user = await User.get({username});
-        console.log(user);
         if (user as IUser[] && user?.length) {
             const isValid = await bcrypt.compare(password, user[0].password);
             if (isValid) {
-                done(null, user);
+                done(null, user[0]);
                 return;
             }
         }
