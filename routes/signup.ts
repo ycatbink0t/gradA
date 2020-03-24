@@ -9,7 +9,7 @@ router.post('', [
     body('email').isEmail(),
     body('username').isLength({ min: 6}),
     body('password').isLength({ min: 10 }),
-    body('group').exists(),
+    body('group').optional(),
 ], async (req: Request, res: Response) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -17,7 +17,7 @@ router.post('', [
         return res.status(HttpStatus.UNPROCESSABLE_ENTITY).send({ errors: errors.array() });
     } else {
         const user = await singUpController(req.body as NewUser);
-        return res.status(HttpStatus.OK).send(user);
+        return res.status(HttpStatus.CREATED).send(user);
     }
 });
 

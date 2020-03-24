@@ -4,7 +4,7 @@ interface Params {
 
 type SqlAndValues = [string,  (string | number | undefined)[]];
 
-function paramsToWhereEqualString(params: Params): SqlAndValues {
+function paramsToWhereEqual(params: Params): SqlAndValues {
     let where = ' WHERE';
     const values: (string | number | undefined)[] = [];
     Object.keys(params).forEach((param, i) => {
@@ -17,7 +17,7 @@ function paramsToWhereEqualString(params: Params): SqlAndValues {
     return [where.substr(0, where.length - 3), values];
 }
 
-function paramsToSetByIdString(params: Params): SqlAndValues {
+function paramsToSetById(params: Params): SqlAndValues {
     let set = ' SET';
     const values: (string | number | undefined)[] = [];
     let i = 1;
@@ -33,4 +33,22 @@ function paramsToSetByIdString(params: Params): SqlAndValues {
     return [set, values];
 }
 
-export { paramsToWhereEqualString, paramsToSetByIdString }
+function paramsToInsert(params: Params): SqlAndValues {
+    let insert = '(';
+    let insertTail = '(';
+    const values: (string | number | undefined)[] = [];
+    Object.keys(params).forEach((param, i) => {
+        if (param === 'id') {
+            return;
+        }
+        insert += param + ', ';
+        insertTail += '$' + (i + 1)  + ', ';
+        values.push(params[param]);
+    });
+    insertTail = insertTail.substr(0, insertTail.length - 2) + ')';
+    insert = insert.substr(0, insert.length - 2) + ')';
+    const sql = insert + ' VALUES ' + insertTail;
+    return [sql, values];
+}
+
+export { paramsToWhereEqual, paramsToSetById, paramsToInsert }

@@ -7,20 +7,20 @@ export interface NewUser {
     email: string,
     password: string,
     username: string,
-    group: string
 }
 
 async function singUpController(newUser: NewUser): Promise<IUser> {
     const password = await bcrypt.hash(newUser.password, saltRounds);
-    let user: IUser;
+    let user = await User.put({...newUser, password});
     let profile: IProfile;
-    try {
-        user = await User.put({...newUser, password});
-        profile = await Profile.put(user.id as number);
+    if (user.id) {
+        profile = await Profile.put({
+            info: '', name: '', surname: '',
+            city: '',
+            country: '',
+            user_id: user.id,
+        });
         user = await User.patch({profile_id: profile.id, id: user.id});
-    } catch (e) {
-        console.log(e);
-        throw new Error(e);
     }
     return user;
 }

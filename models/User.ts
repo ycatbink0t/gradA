@@ -1,7 +1,8 @@
 import pool from '../db';
-import { paramsToSetByIdString, paramsToWhereEqualString } from '../db/utils';
+// import { paramsToSetById, paramsToWhereEqual } from '../db/utils';
+import { IPrimitives, modelBuilder, ModelConfig } from '../utils/ModelBuilder';
 
-export interface IUser {
+export interface IUser extends IPrimitives{
     id?: number,
     email: string,
     username: string,
@@ -9,13 +10,19 @@ export interface IUser {
     profile_id?: number,
 }
 
-class User {
+const config: ModelConfig<IUser> = {
+    tableName: 'public.user'
+};
+
+const User = modelBuilder(pool, config);
+
+/* class User {
     constructor() {
         throw new Error('Class User is static');
     }
 
     static async get(params: Partial<IUser>): Promise<IUser[] | null> {
-        const [where, values] = paramsToWhereEqualString(params);
+        const [where, values] = paramsToWhereEqual(params);
 
         const sql = 'SELECT * FROM public.user ' + where;
 
@@ -27,7 +34,7 @@ class User {
     }
 
     static async patch(params: Partial<IUser>): Promise<IUser> {
-        const [set, values] = paramsToSetByIdString(params);
+        const [set, values] = paramsToSetById(params);
 
         const sql = 'UPDATE public.user ' + set + ' RETURNING *';
 
@@ -43,6 +50,6 @@ class User {
 
         return rows[0];
     }
-}
+} */
 
 export default User;

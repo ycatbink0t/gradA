@@ -31,7 +31,7 @@ app.use('/signup', signup);
 app.post('/login', passport.authenticate('local',
     { session: true }),
     (req, res) => {
-        res.status(201).send(req.user);
+        res.send(req.user);
     });
 app.post('/logout', mustAuthenticated, (req, res) => {
     req.logOut();

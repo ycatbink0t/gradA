@@ -20,7 +20,6 @@ describe('Sign up test', () => {
             username: 'username',
             email: 'email@gmail.com',
             password: 'password123qwe',
-            group: 'zalupa'
         };
         const res = await agent
            .post('/signup')

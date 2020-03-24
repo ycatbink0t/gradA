@@ -1,7 +1,8 @@
 import pool from '../db';
-import { paramsToSetByIdString, paramsToWhereEqualString } from '../db/utils';
+// import { paramsToSetById, paramsToWhereEqual } from '../db/utils';
+import { IPrimitives, modelBuilder, ModelConfig } from '../utils/ModelBuilder';
 
-export interface IProfile {
+export interface IProfile extends IPrimitives{
     id?: number,
     name: string,
     surname: string,
@@ -11,13 +12,19 @@ export interface IProfile {
     info: string,
 }
 
-class Profile {
+const config: ModelConfig<IProfile> = {
+    tableName: 'public.profile',
+};
+
+const Profile = modelBuilder(pool, config);
+
+/* class Profile {
     constructor() {
         throw new Error('Class Profile is static');
     }
 
     static async get(params: Partial<IProfile>): Promise<IProfile[] | null> {
-        const [where, values] = paramsToWhereEqualString(params);
+        const [where, values] = paramsToWhereEqual(params);
         const sql = 'SELECT * FROM public.profile ' + where;
 
         const { rows } = await pool.query<IProfile>(sql, values);
@@ -28,7 +35,7 @@ class Profile {
     }
 
     static async patch(params: Partial<IProfile>): Promise<IProfile> {
-        const [set, values] = paramsToSetByIdString(params);
+        const [set, values] = paramsToSetById(params);
 
         const sql = 'UPDATE public.profile ' + set + ' RETURNING *';
 
@@ -43,6 +50,6 @@ class Profile {
         const { rows } = await pool.query<IProfile>(sql, [user_id]);
         return rows[0];
     }
-}
+} */
 
 export default Profile;
