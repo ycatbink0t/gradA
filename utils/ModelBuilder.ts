@@ -5,12 +5,7 @@ export interface IPrimitives {
     [key: string]: string | number | undefined;
 }
 
-export interface ModelConfig<X extends IPrimitives> {
-    tableName: string,
-    _?: Partial<X>
-}
-
-function modelBuilder<T extends Pool, X extends IPrimitives>(pool: T, config: ModelConfig<X>) {
+function modelBuilder<X extends IPrimitives, T extends Pool>(pool: T, tableName: string) {
     return class Model {
         constructor() {
             throw new Error('Class Profile is static');
@@ -18,7 +13,7 @@ function modelBuilder<T extends Pool, X extends IPrimitives>(pool: T, config: Mo
 
         static async get(params: Partial<X>): Promise<X[] | null> {
             const [where, values] = paramsToWhereEqual(params);
-            const sql = 'SELECT * FROM ' + config.tableName + ' ' + where;
+            const sql = 'SELECT * FROM ' + tableName + ' ' + where;
 
             const { rows } = await pool.query<X>(sql, values);
 
@@ -30,7 +25,7 @@ function modelBuilder<T extends Pool, X extends IPrimitives>(pool: T, config: Mo
         static async patch(params: Partial<X> & { id: number }): Promise<X> {
             const [set, values] = paramsToSetById(params);
 
-            const sql = 'UPDATE ' + config.tableName + ' ' + set + ' RETURNING *';
+            const sql = 'UPDATE ' + tableName + ' ' + set + ' RETURNING *';
 
             const { rows } = await pool.query<X>(sql, values);
 
@@ -39,10 +34,16 @@ function modelBuilder<T extends Pool, X extends IPrimitives>(pool: T, config: Mo
 
         static async put(params: X): Promise<X> {
             const [insert, values] = paramsToInsert(params);
-            const sql = `INSERT INTO ${config.tableName} ${insert} RETURNING *`;
+            const sql = `INSERT INTO ${tableName} ${insert} RETURNING *`;
 
             const { rows } = await pool.query<X>(sql, values);
             return rows[0];
+        }
+
+        static async delete(id: number): Promise<void> {
+            const sql = `DELETE FROM ${tableName} WHERE ID = $1`;
+            await pool.query(sql, [id]);
+            return;
         }
     }
 }

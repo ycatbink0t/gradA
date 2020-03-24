@@ -1,6 +1,5 @@
 import pool from '../db';
-// import { paramsToSetById, paramsToWhereEqual } from '../db/utils';
-import { IPrimitives, modelBuilder, ModelConfig } from '../utils/ModelBuilder';
+import { IPrimitives, modelBuilder } from '../utils/ModelBuilder';
 
 export interface IProfile extends IPrimitives{
     id?: number,
@@ -12,11 +11,7 @@ export interface IProfile extends IPrimitives{
     info: string,
 }
 
-const config: ModelConfig<IProfile> = {
-    tableName: 'public.profile',
-};
-
-const Profile = modelBuilder(pool, config);
+const Profile = modelBuilder<IProfile, typeof pool>(pool, 'public.profile');
 
 /* class Profile {
     constructor() {
