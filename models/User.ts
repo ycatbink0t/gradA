@@ -9,6 +9,12 @@ export interface IUser extends IModel{
     profile_id?: number,
 }
 
+declare global {
+    namespace Express {
+        interface User extends IUser {}
+    }
+}
+
 const User = modelBuilder<IUser, typeof pool>(pool, 'public.user');
 
 export default User;

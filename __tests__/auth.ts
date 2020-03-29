@@ -50,7 +50,7 @@ describe('Profile test', () => {
     it ('Should get user profile', async () => {
         const res = await agent.get('/api/v1/profile?me=true');
         expect(res.status).toBe(HttpStatus.OK);
-        expect(res.body).toHaveProperty('user_id');
+        expect(res.body[0]).toHaveProperty('user_id');
     });
 });
 
