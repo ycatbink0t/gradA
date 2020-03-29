@@ -1,11 +1,11 @@
 import { Pool } from 'pg';
 import { paramsToInsert, paramsToSetById, paramsToWhereEqual } from '../db/utils';
 
-export interface IPrimitives {
+export interface IModel {
     [key: string]: string | number | undefined;
 }
 
-function modelBuilder<X extends IPrimitives, T extends Pool>(pool: T, tableName: string) {
+function modelBuilder<X extends IModel, T extends Pool>(pool: T, tableName: string) {
     return class Model {
         constructor() {
             throw new Error('Class Profile is static');

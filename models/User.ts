@@ -1,7 +1,7 @@
 import pool from '../db';
-import { IPrimitives, modelBuilder } from '../utils/ModelBuilder';
+import { IModel, modelBuilder } from '../utils/ModelBuilder';
 
-export interface IUser extends IPrimitives{
+export interface IUser extends IModel{
     id?: number,
     email: string,
     username: string,
