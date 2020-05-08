@@ -11,7 +11,7 @@ function serverReady(): Promise<void> {
             app.on('listening', () => resolve());
         }
     })
-};
+}
 
 
 describe('Sign up test', () => {

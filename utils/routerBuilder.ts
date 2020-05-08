@@ -1,20 +1,18 @@
 import { Router } from 'express';
-import { check, query, body, param, cookie } from 'express-validator';
+import { ValidationChain } from 'express-validator';
 import { IController } from '../controllers/IController';
 import { IModel, Model, modelBuilder } from './ModelBuilder';
 import controllerBuilder from './controllerBuilder';
 import pool from '../db';
 
-type expressValidator = typeof cookie | typeof check | typeof query | typeof body | typeof param;
-
 export interface IValidators {
-    all?: expressValidator[],
-    get?: expressValidator[],
-    getById?: expressValidator[],
-    put?: expressValidator[],
-    patch?: expressValidator[],
-    delete?: expressValidator[],
-    post?: expressValidator[],
+    all?: ValidationChain[],
+    get?: ValidationChain[],
+    getById?: ValidationChain[],
+    put?: ValidationChain[],
+    patch?: ValidationChain[],
+    delete?: ValidationChain[],
+    post?: ValidationChain[],
 }
 
 function routerForController<T>(path: string, controller: IController<T>, validators?: IValidators): ReturnType<Router> {
@@ -65,4 +63,4 @@ function routerForTable<T extends IModel>(path: string, tableName: string, valid
     return routerForModel(path, model, validators);
 }
 
-export default { routerForController, routerForModel, routerForTable };
+export { routerForController, routerForModel, routerForTable };
